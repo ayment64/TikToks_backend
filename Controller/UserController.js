@@ -5,6 +5,8 @@ const queryString = require('query-string');
 require('dotenv').config()
 const jwt = require('jsonwebtoken');
 const { request } = require('express');
+
+
 exports.add_a_user = async function (req, res) {
     console.log(req.body);
     const user = new User({
@@ -94,6 +96,18 @@ exports.DeleteUser = async function (req, res) {
     } catch (err) {
         res.status(400).json({ message: err.message })
     }
+}
+exports.getQrCode = async function(req,res){
+    var QRCode = require('qrcode')
+ var content = req.body.user;
+QRCode.toString(JSON.stringify(content),{type:'terminal'}, function (err, url) {
+    if(err)
+    {
+        res.json(400).json({"message": "something went rong"})
+    }
+  console.log(url)
+  res.status(200).json({"url": url})
+})
 }
 
 // exports.LoginWithFacebook = async function (req, res) {

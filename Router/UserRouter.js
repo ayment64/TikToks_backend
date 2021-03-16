@@ -11,4 +11,5 @@ router.post('/Profile',authenticateToken ,UserController.addProfileToUser);
 router.post("/login", UserController.login)
 router.post("/updateProfile",authenticateToken ,UserController.UpdateProfile)
 router.post("/deleteUser",authenticateToken ,UserController.DeleteUser)
+router.get("/getQrCode",authenticateToken ,UserController.getQrCode)
 module.exports = router;
