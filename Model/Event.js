@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+const User = require('./User');
 var Schema = mongoose.Schema;
 var EventSchema = new Schema({
     title: { type: String, unique: true, required: true },
@@ -8,9 +9,9 @@ var EventSchema = new Schema({
     location: { type: String },
     limit: { type: Number },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
-    isDeleted: { type: Boolean, required: true },
- 
+    isDeleted: { type: Boolean, required: true }, 
+    participants: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}]  
 
 
-})
+   })
 module.exports = mongoose.model('Event', EventSchema);

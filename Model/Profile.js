@@ -35,8 +35,9 @@ var UserSchema = new Schema({
             unique:true,
             ref: 'user'
         }
-    ]
+    ],
 
+    participation: [{type: mongoose.Schema.Types.ObjectId, ref: 'event'}] 
 
 })
 module.exports = mongoose.model('profile', UserSchema);
