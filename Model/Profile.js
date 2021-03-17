@@ -20,11 +20,13 @@ var UserSchema = new Schema({
     },
     isDeleted: {
         type: Boolean,
-        required: true
+        required: true,
+        default:false
     },
     isAdmin: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
     },
     imageName: {
         type: String,
@@ -35,7 +37,10 @@ var UserSchema = new Schema({
             unique:true,
             ref: 'user'
         }
-    ]
+    ],enabled : {
+        type: Boolean,
+        default : false
+    }
 
 
 })

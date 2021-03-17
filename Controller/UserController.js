@@ -36,6 +36,26 @@ exports.login = async function (req, res) {
         res.status(400).json({ message: err.message })
     }
 }
+exports.validateUser=  async function(req,res){
+    console.log(req.body)
+    try {
+        const requestOwner = await Profile.findOne({ user: req.body.user })
+        if(requestOwner.isAdmin)
+        {
+            const updatedUser = await Profile.findOneAndUpdate({ user: req.body.userToEnable._id }, {
+                enabled: true,
+            })
+            res.status(200).json({ "message": "User deleted" })
+        }
+        else{
+            res.status(403).json({ "message": 'unAuthorised Acceess' })
+
+        }
+    }catch(error){
+        res.status(400).json({ "message": 'something went rong' })
+
+    }
+}
 
 
 exports.addProfileToUser = async function (req, res) {
