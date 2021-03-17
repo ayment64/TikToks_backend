@@ -20,7 +20,7 @@ exports.add_a_user = async function (req, res) {
 
         res.status(201).json({ accessToken })
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.json({ message: err.message })
     }
 }
 exports.login = async function (req, res) {
@@ -33,17 +33,37 @@ exports.login = async function (req, res) {
         const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET)
         res.status(200).json({ accessToken })
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.json({ message: err.message })
+    }
+}
+exports.validateUser=  async function(req,res){
+    console.log(req.body)
+    try {
+        const requestOwner = await Profile.findOne({ user: req.body.user })
+        if(requestOwner.isAdmin)
+        {
+            const updatedUser = await Profile.findOneAndUpdate({ user: req.body.userToEnable._id }, {
+                enabled: true,
+            })
+            res.status(200).json({ "message": "User deleted" })
+        }
+        else{
+            res.status(403).json({ "message": 'unAuthorised Acceess' })
+
+        }
+    }catch(error){
+        res.json({ "message": 'something went rong' })
+
     }
 }
 
 
 exports.addProfileToUser = async function (req, res) {
-    console.log("-----------------------------------------------------")
-    console.log(req.body);
-    console.log("-----------------------------------------------------")
-    console.log(req.body.user);
-    console.log("-----------------------------------------------------")
+    // console.log("-----------------------------------------------------")
+    // console.log(req.body);
+    // console.log("-----------------------------------------------------")
+    // console.log(req.body.user);
+    // console.log("-----------------------------------------------------")
 
 
     req.body.imageName = req.file.filename;
@@ -64,7 +84,7 @@ exports.addProfileToUser = async function (req, res) {
         res.status(201).json({ accessToken })
 
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.json({ message: err.message })
     }
 }
 
@@ -86,36 +106,41 @@ exports.UpdateProfile = async function (req, res) {
         res.status(201).json({ accessToken })
 
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.json({ message: err.message })
     }
 }
 exports.DeleteUser = async function (req, res) {
-    console.log(req.body);
+    // console.log(req.body);
 
 
 
     try {
-        const requestOwner = await Profile.findOne({ user: req.body.user })
-
+        let requestOwner = await Profile.findOne({ user: req.body.user })
+        console.log("----------------------------------------------------------------------")
+        console.log(requestOwner)
+        console.log("----------------------------------------------------------------------")
+         requestOwner = await Profile.findOne({ user: req.body.user })
+        console.log("----------------------------------------------------------------------")
+        console.log(requestOwner)
+        console.log("----------------------------------------------------------------------")
         if (requestOwner.isAdmin) {
             const deletedTouser = await User.findOne({ _id: req.body.userToDelete })
-            console.log("----------------------------------------------------------------------")
-            console.log(deletedTouser)
-            console.log("----------------------------------------------------------------------")
+            // console.log("----------------------------------------------------------------------")
+            // console.log(deletedTouser)
+            // console.log("----------------------------------------------------------------------")
             const deleteUser = await Profile.findOneAndUpdate({ user: deletedTouser }, { isDeleted: true });
-            console.log(deleteUser)
             res.status(200).json({ "message": "User deleted" })
         } else {
             res.status(403).json({ "message": 'unAuthorised Acceess' })
         }
 
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.json({ message: err.message })
     }
 }
 
 exports.addFriend = async function (req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     var currentuser =JSON.stringify(req.body.user);
     try {
         await Profile.findOneAndUpdate({ user: req.body.user }, { $push: { friendlist: req.body.friend } })
@@ -123,11 +148,11 @@ exports.addFriend = async function (req, res) {
         const accessToken = jwt.sign(currentuser, process.env.ACCESS_TOKEN_SECRET)
         res.status(200).json({ accessToken })
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        res.json({ message: error.message })
     }
 }
 exports.deleteFriend = async function (req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     var currentuser =JSON.stringify(req.body.user);
     try {
         await Profile.findOneAndUpdate({ user: req.body.user }, { $delete: { friendlist: req.body.friend } })
@@ -135,7 +160,7 @@ exports.deleteFriend = async function (req, res) {
         const accessToken = jwt.sign(currentuser, process.env.ACCESS_TOKEN_SECRET)
         res.status(200).json({ accessToken })
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        res.json({ message: error.message })
     }
 }
 exports.getQrCode = async function (req, res) {

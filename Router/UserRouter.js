@@ -11,7 +11,7 @@ const { upload } = require('../Core/fileUploader')
 router.post('/', UserController.add_a_user);
 // ! MultiPart Function
 // ? creates a profile for a user takes {firstName , lastName ,dateOfBirth ,isDeleted,isAdmin , fileName} plus user from jwt
-// ? uploads image to uploads folder and pust name in req.body.imageName*
+// ? uploads image to uploads folder and puts name in req.body.imageName*
 // ? isDeleted is false by default
 // ? isAdmin is false by default  
 // ? returns JWT
@@ -27,6 +27,10 @@ router.post("/updateProfile",upload.single('profileImage'), authenticateToken, U
 // ? takes user as a params and updates thier profile 'isDeleted' Attribute to true
 // ? returns Jwt  
 router.post("/deleteUser", authenticateToken, UserController.DeleteUser)
+// ! Admin only function 
+// ? takes user as a params and updates thier profile 'enabled' Attribute to true
+// ? returns message : user enabled  
+router.post("/enable", authenticateToken, UserController.validateUser)
 // ! QRcode based 
 // ? takes only jwt as params and creates a QrCode from the user object 
 // ? returns QrCode of the connected user
