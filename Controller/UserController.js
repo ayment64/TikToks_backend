@@ -4,11 +4,13 @@ const Profile = require('../Model/Profile');
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
+
+
+
 exports.add_a_user = async function (req, res) {
     console.log(req.body);
     const user = new User({
         email: req.body.email,
-
         password: req.body.password,
 
     });
@@ -34,6 +36,8 @@ exports.login = async function (req, res) {
         res.status(400).json({ message: err.message })
     }
 }
+
+
 exports.addProfileToUser = async function (req, res) {
     console.log("-----------------------------------------------------")
     console.log(req.body);
@@ -63,6 +67,7 @@ exports.addProfileToUser = async function (req, res) {
         res.status(400).json({ message: err.message })
     }
 }
+
 exports.UpdateProfile = async function (req, res) {
     console.log(req.body);
 
