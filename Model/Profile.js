@@ -6,26 +6,37 @@ var UserSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
-    firstName : {
+    firstName: {
         type: String,
         required: true
     },
-    lastName : {
+    lastName: {
         type: String,
         required: true
     },
-    dateOfBirth : {
+    dateOfBirth: {
         type: String,
         required: true
-    }, 
-    isDeleted : {
+    },
+    isDeleted: {
         type: Boolean,
         required: true
     },
-    isAdmin : {
+    isAdmin: {
         type: Boolean,
         required: true
-    } 
+    },
+    imageName: {
+        type: String,
 
-   })
+    }, friendlist: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            unique:true,
+            ref: 'user'
+        }
+    ]
+
+
+})
 module.exports = mongoose.model('profile', UserSchema);

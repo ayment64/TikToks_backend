@@ -7,11 +7,13 @@ var UserSchema = new Schema({
         required: true,
         unique: true
     },
+    
     password: {
         type: String,
         required: true
     },
-    user: {
+
+    profile: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },

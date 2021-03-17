@@ -8,6 +8,8 @@ exports.authenticateToken = async function (req, res, next) {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) return res.sendStatus(403)
         req.body.user = user;
+        if(req.file!= null)
+        req.body.imageName = req.file.filename
         
         next();
     })
