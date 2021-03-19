@@ -41,8 +41,9 @@ var UserSchema = new Schema({
     enabled : {
         type: Boolean,
         default : false
-    }
+    },
 
+    participation: [{type: mongoose.Schema.Types.ObjectId, ref: 'event'}] 
 
 })
 module.exports = mongoose.model('profile', UserSchema);

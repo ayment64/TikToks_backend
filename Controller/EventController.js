@@ -1,6 +1,7 @@
 require('dotenv').config()
 const Event = require('../Model/Event');
 const User = require('../Model/User');
+const UserController = require ('./UserController');
 
 //////////Add Event//////////////////////
 exports.add_Event = async function(req,res){
@@ -49,9 +50,8 @@ exports.Delete_Event = async function (req, res){
     } catch (err) {
         res.status(400).json({ message: err.message })
     }
-
-
 }
+
   //////////Get all Events//////////////////////
   exports.All_Events = async function (req,res) { 
 
@@ -63,6 +63,35 @@ exports.Delete_Event = async function (req, res){
         const resultData = await Event.findOne({ _id: req.params.id }).populate({ path: 'User' })
             .populate({ path: 'admin' }).exec();
         res.send({ msg: 'OK', data: resultData });
+    }
+
+}
+
+exports.Participer_Event = async function (res,req){
+
+    console.log(req.body);
+    var currentuser =JSON.stringify(req.body.user);
+    try {
+        await Event.findOneAndUpdate({ event: req.body.event }, { $push: { participants: req.body.user } })
+        await Profile.findOneAndUpdate({ user: req.body.user }, { $push: { participation: req.body.event } })
+        const accessToken = jwt.sign(currentuser, process.env.ACCESS_TOKEN_SECRET)
+        res.status(200).json({ accessToken })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+
+}
+
+exports.DeleteParticipation_Event = async function (res,req){
+    console.log(req.body);
+    var currentuser =JSON.stringify(req.body.user);
+    try {
+        await Event.findOneAndUpdate({ event: req.body.event }, { $delete: { participants: req.body.user } })
+        await Profile.findOneAndUpdate({ user: req.body.user }, { $delete: { participation: req.body.event } })
+        const accessToken = jwt.sign(currentuser, process.env.ACCESS_TOKEN_SECRET)
+        res.status(200).json({ accessToken })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
     }
 
 }

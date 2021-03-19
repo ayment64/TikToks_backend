@@ -10,5 +10,7 @@ router.post('/', authenticateToken, EventController.add_Event);
 router.post('/updateEvent',authenticateToken, EventController.Update_Event);
 router.post('/DeleteEvent/:id',authenticateToken, EventController.Delete_Event);
 router.get('/:id',authenticateToken, EventController.All_Events);
+router.post('/paticipation', authenticateToken,EventController.Participer_Event);
+router.post('/annuler',authenticateToken,EventController.DeleteParticipation_Event);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+const User = require('./User');
 var Schema = mongoose.Schema;
 var EventSchema = new Schema({
     title: { type: String, unique: true, required: true },
@@ -12,5 +13,5 @@ var EventSchema = new Schema({
  
 
 
-})
+   })
 module.exports = mongoose.model('Event', EventSchema);
