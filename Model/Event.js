@@ -7,7 +7,7 @@ var EventSchema = new Schema({
     duration: { type: Number, required: false },
     location: { type: String },
     limit: { type: Number },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     isDeleted: { type: Boolean, required: true },
  
 

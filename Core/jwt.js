@@ -8,9 +8,13 @@ exports.authenticateToken = async function (req, res, next) {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) return res.sendStatus(403)
         req.body.user = user;
-        if(req.file!= null)
-        req.body.imageName = req.file.filename
-        
+        if (req.files != null) {
+            req.body.media = req.files.map((element) => element.filename)
+            console.log(req.body.media)
+        }
+        if (req.file != null)
+            req.body.imageName = req.file.filename
+
         next();
     })
 

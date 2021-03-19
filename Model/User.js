@@ -1,5 +1,6 @@
 'use strict';
 var mongoose = require('mongoose');
+require('./Profile');
 var Schema = mongoose.Schema;
 var UserSchema = new Schema({
     email: {
@@ -15,7 +16,7 @@ var UserSchema = new Schema({
 
     profile: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'profile'
     },
    })
 module.exports = mongoose.model('User', UserSchema);

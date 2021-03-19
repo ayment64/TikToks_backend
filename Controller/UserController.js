@@ -27,7 +27,7 @@ exports.login = async function (req, res) {
     console.log(req.body);
     const { email, password } = req.body;
     try {
-        let user = await User.findOne({ email: email, password: password });
+        let user = await User.findOne({ email: email, password: password }).populate({path: 'profile',populate:{path:'friendlist'}})
         console.log(user.toJSON());
 
         const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET)
@@ -36,22 +36,21 @@ exports.login = async function (req, res) {
         res.json({ message: err.message })
     }
 }
-exports.validateUser=  async function(req,res){
+exports.validateUser = async function (req, res) {
     console.log(req.body)
     try {
         const requestOwner = await Profile.findOne({ user: req.body.user })
-        if(requestOwner.isAdmin)
-        {
-            const updatedUser = await Profile.findOneAndUpdate({ user: req.body.userToEnable._id }, {
+        if (requestOwner.isAdmin) {
+             await Profile.findOneAndUpdate({ user: req.body.userToEnable._id }, {
                 enabled: true,
             })
             res.status(200).json({ "message": "User deleted" })
         }
-        else{
+        else {
             res.status(403).json({ "message": 'unAuthorised Acceess' })
 
         }
-    }catch(error){
+    } catch (error) {
         res.json({ "message": 'something went rong' })
 
     }
@@ -59,12 +58,11 @@ exports.validateUser=  async function(req,res){
 
 
 exports.addProfileToUser = async function (req, res) {
-    // console.log("-----------------------------------------------------")
-    // console.log(req.body);
-    // console.log("-----------------------------------------------------")
-    // console.log(req.body.user);
-    // console.log("-----------------------------------------------------")
-
+    console.log("-----------------------------------------------------")
+    console.log(req.body);
+    console.log("-----------------------------------------------------")
+    console.log(req.body.user);
+    console.log("-----------------------------------------------------")
 
     req.body.imageName = req.file.filename;
     const newProfile = new Profile(req.body)
@@ -77,7 +75,7 @@ exports.addProfileToUser = async function (req, res) {
             password: req.body.user.password,
             profile: savedProfile
         }
-        const saveduser = await User.findOneAndUpdate({ email: updatedUser.email }, updatedUser
+         await User.findOneAndUpdate({ email: updatedUser.email }, updatedUser
         )
         const accessToken = jwt.sign(savedProfile.user.toJSON(), process.env.ACCESS_TOKEN_SECRET)
 
@@ -115,14 +113,7 @@ exports.DeleteUser = async function (req, res) {
 
 
     try {
-        let requestOwner = await Profile.findOne({ user: req.body.user })
-        console.log("----------------------------------------------------------------------")
-        console.log(requestOwner)
-        console.log("----------------------------------------------------------------------")
-         requestOwner = await Profile.findOne({ user: req.body.user })
-        console.log("----------------------------------------------------------------------")
-        console.log(requestOwner)
-        console.log("----------------------------------------------------------------------")
+        requestOwner = await Profile.findOne({ user: req.body.user })
         if (requestOwner.isAdmin) {
             const deletedTouser = await User.findOne({ _id: req.body.userToDelete })
             // console.log("----------------------------------------------------------------------")
@@ -141,7 +132,7 @@ exports.DeleteUser = async function (req, res) {
 
 exports.addFriend = async function (req, res) {
     // console.log(req.body);
-    var currentuser =JSON.stringify(req.body.user);
+    var currentuser = JSON.stringify(req.body.user);
     try {
         await Profile.findOneAndUpdate({ user: req.body.user }, { $push: { friendlist: req.body.friend } })
         await Profile.findOneAndUpdate({ user: req.body.friend }, { $push: { friendlist: req.body.user } })
@@ -153,10 +144,10 @@ exports.addFriend = async function (req, res) {
 }
 exports.deleteFriend = async function (req, res) {
     // console.log(req.body);
-    var currentuser =JSON.stringify(req.body.user);
+    var currentuser = JSON.stringify(req.body.user);
     try {
-        await Profile.findOneAndUpdate({ user: req.body.user }, { $delete: { friendlist: req.body.friend } })
-        await Profile.findOneAndUpdate({ user: req.body.friend }, { $delete: { friendlist: req.body.user } })
+        await Profile.findOneAndUpdate({ user: req.body.user }, { $unset: { friendlist: req.body.friend } })
+        await Profile.findOneAndUpdate({ user: req.body.friend }, { $unset: { friendlist: req.body.user } })
         const accessToken = jwt.sign(currentuser, process.env.ACCESS_TOKEN_SECRET)
         res.status(200).json({ accessToken })
     } catch (error) {

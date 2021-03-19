@@ -6,15 +6,6 @@ const User = require('../Model/User');
 exports.add_Event = async function(req,res){
      console.log("aaaaa");
     console.log(req.body);
-    const event = new Event({
-        title: req.body.title ,
-        price: req.body.price,
-        Date: req.body.data,
-        duration: req.body.duration,
-        location: req.body.location ,
-        limit: req.body.limit,
-
-    });
     const resultData = await Event.create(req.body).catch(err => err);
     res.send({ msg: 'OK', data: resultData})
 }
@@ -65,11 +56,11 @@ exports.Delete_Event = async function (req, res){
   exports.All_Events = async function (req,res) { 
 
     if (req.params.id === 'all') {
-        const resultData = await Event.find().populate({ path: 'user' })
+        const resultData = await Event.find().populate({ path: 'User' })
             .populate({ path: 'admin' }).exec();
         res.send({ msg: 'OK', data: resultData });
     } else {
-        const resultData = await Event.findOne({ _id: req.params.id }).populate({ path: 'user' })
+        const resultData = await Event.findOne({ _id: req.params.id }).populate({ path: 'User' })
             .populate({ path: 'admin' }).exec();
         res.send({ msg: 'OK', data: resultData });
     }

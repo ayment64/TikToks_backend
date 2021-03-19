@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var UserSchema = new Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'User'
     },
     firstName: {
         type: String,
@@ -34,10 +34,11 @@ var UserSchema = new Schema({
     }, friendlist: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            unique:true,
-            ref: 'user'
+
+            ref: 'User'
         }
-    ],enabled : {
+    ],
+    enabled : {
         type: Boolean,
         default : false
     }
