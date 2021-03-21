@@ -2,6 +2,8 @@
 const express = require('express');
 const app = express();
 const db = require('./Environnement/Connection.js');
+const cors = require('cors')
+
 app.use(express.json());
 const eventRouter = require('./Router/EventRouter');
 // se connecter à mongo db

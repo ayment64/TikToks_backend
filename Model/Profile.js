@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var UserSchema = new Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
+        unique:true,
         ref: 'User'
     },
     firstName: {
@@ -38,10 +39,18 @@ var UserSchema = new Schema({
             ref: 'User'
         }
     ],
+    posts :  [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+
+            ref: 'Post'
+        }
+    ],
     enabled : {
         type: Boolean,
         default : false
     },
+
 
     participation: [{type: mongoose.Schema.Types.ObjectId, ref: 'event'}] 
 

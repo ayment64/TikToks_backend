@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var UserSchema = new Schema({
     sharedFrom: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Post'
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -12,7 +12,7 @@ var UserSchema = new Schema({
     },
     post: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'post'
+        ref: 'Post'
     },
     isDeleted: {
         type: Boolean,
