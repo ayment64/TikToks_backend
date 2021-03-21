@@ -59,12 +59,12 @@ exports.validateUser = async function (req, res) {
 
 exports.addProfileToUser = async function (req, res) {
     console.log("-----------------------------------------------------")
-    console.log(req.body);
+    console.log(req.firstName);
     console.log("-----------------------------------------------------")
     console.log(req.body.user);
     console.log("-----------------------------------------------------")
 
-    req.body.imageName = req.file.filename;
+    req.body.imageName =  req.body.imageName;
     const newProfile = new Profile(req.body)
 
 

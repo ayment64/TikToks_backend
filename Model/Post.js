@@ -5,7 +5,6 @@ var UserSchema = new Schema({
     content: {
         type: String,
         required: true,
-        unique: true
     },
     media: [
         {
@@ -15,7 +14,6 @@ var UserSchema = new Schema({
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            unique: true,
             ref: 'Like'
         }
     ],
@@ -23,14 +21,12 @@ var UserSchema = new Schema({
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            unique: true,
             ref: 'Comment'
         }
     ],
     shares: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            unique: true,
             ref: 'Share'
         }
     ],
